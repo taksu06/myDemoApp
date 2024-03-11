@@ -1,103 +1,80 @@
 package com.mycompany.app;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import com.mycompany.app.AppTest;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-public class AppTest
-        extends TestCase
-{
-    // following are variables that are to be used given to app as parameters
-    private int [] inpArr;
-    private ArrayList<Integer> inpArrayList;
-    private int threshold;
-    private boolean valid;
 
-    //following are expected results::
-    private int [] ExpectedinpArr;
-    private ArrayList<Integer> ExpectedinpArrayList;
-    private int Expectedthreshold;
-    private int Expectedvalid;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+public class AppTest extends TestCase {
 
-
-
-    public AppTest( String testName )
-    {
-
-        super( testName );
+    public AppTest(String testName) {
+        super(testName);
     }
 
-    public void testShouldReturnFalseWhenNotValid(){
-        inpArrayList= new ArrayList<Integer>(Arrays.asList(1,2,3,4));
-        inpArr= new int[]{10,1,2,3};
-        valid = false;
-        threshold = 2;
-        assertFalse(App.firstArraySumGreaterThanSecondArraySumAndAThresholdValueWhenBooleanValidIsTrue(inpArr,inpArrayList,threshold,valid));
-
-    }
-    public void testShouldReturnFalseWhenThresholdHigher(){
-        inpArrayList= new ArrayList<Integer>(Arrays.asList(1,2,3,4));
-        inpArr= new int[]{10,1,2,3};
-        valid = true;
-        threshold = 200;
-
-        assertFalse(App.firstArraySumGreaterThanSecondArraySumAndAThresholdValueWhenBooleanValidIsTrue(inpArr,inpArrayList,threshold,valid));
-
-    }
-    public void testShouldReturnTrue(){
-        inpArrayList= new ArrayList<Integer>(Arrays.asList(1,2,3,4));
-        inpArr= new int[]{10,1,2,3};
-        valid = true;
-        threshold = 10;
-
-        assertTrue(App.firstArraySumGreaterThanSecondArraySumAndAThresholdValueWhenBooleanValidIsTrue(inpArr,inpArrayList,threshold,valid));
-
-    }
-    public void testNull() {
-        inpArrayList= null;
-        inpArr = null;
-        valid = false;
-        threshold = 0;
-
-        assertFalse(App.firstArraySumGreaterThanSecondArraySumAndAThresholdValueWhenBooleanValidIsTrue(inpArr,inpArrayList,threshold,valid));
-
-    }
-    public void testWhenBothNotValidAndThresholdHigher(){
-        inpArrayList= new ArrayList<Integer>(Arrays.asList(1,2,3,4));
-        inpArr= new int[]{10,1,2,3};
-        valid = false;
-        threshold = 200;
-
-        assertFalse(App.firstArraySumGreaterThanSecondArraySumAndAThresholdValueWhenBooleanValidIsTrue(inpArr,inpArrayList,threshold,valid));
-
-
-    }
-    public void testWhenNotValidAndThresholdHigherAndSecondArrayHigher(){
-        inpArrayList= new ArrayList<Integer>(Arrays.asList(1,2,3,4,100));
-        inpArr= new int[]{10,1,2,3};
-        valid = false;
-        threshold = 200;
-
-        assertFalse(App.firstArraySumGreaterThanSecondArraySumAndAThresholdValueWhenBooleanValidIsTrue(inpArr,inpArrayList,threshold,valid));
-
-
-    }
-    public void testShouldReturnFalseSecondArrhigher(){
-        inpArrayList= new ArrayList<Integer>(Arrays.asList(1,2,3,4,250));
-        inpArr= new int[]{10,1,2,3};
-        valid = true;
-        threshold = 2;
-
-        assertFalse(App.firstArraySumGreaterThanSecondArraySumAndAThresholdValueWhenBooleanValidIsTrue(inpArr,inpArrayList,threshold,valid));
+    public static Test suite() {
+        return new TestSuite(AppTest.class);
     }
 
-    public static Test suite()
-    {  return new TestSuite( AppTest.class );
+    public void testCalculateSum() {
+        ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3));
+        ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(4, 5, 6));
+        int param1 = 2;
+        int param2 = 3;
+
+        int expectedResult = 27;
+        int actualResult = App.calculateSum(list1, list2, param1, param2);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    public void testCalculateSumWithEmptyLists() {
+        ArrayList<Integer> list1 = new ArrayList<>();
+        ArrayList<Integer> list2 = new ArrayList<>();
+        int param1 = 2;
+        int param2 = 3;
+
+        int expectedResult = 6;
+        int actualResult = App.calculateSum(list1, list2, param1, param2);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    public void testCalculateSumWithNegativeParams() {
+        ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3));
+        ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(4, 5, 6));
+        int param1 = -2;
+        int param2 = -3;
+
+        int expectedResult = 27; // (-6) + (-15) - 6
+        int actualResult = App.calculateSum(list1, list2, param1, param2);
+
+        assertEquals(expectedResult, actualResult);
     }
 
 
+    public void testCalculateSumWithLargeNumbers() {
+        ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(1000000));
+        ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(2000000));
+        int param1 = 1;
+        int param2 = 2;
+
+        int expectedResult = 3000002; // (1000000 + 2000000) + (1 * 2)
+        int actualResult = App.calculateSum(list1, list2, param1, param2);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    public void testCalculateSumWithDifferentListSizes() {
+        ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2));
+        ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(3, 4, 5));
+        int param1 = 2;
+        int param2 = 3;
+
+        int expectedResult = 21; // (1 + 2) + (3 + 4 + 5) + (2 * 3)
+        int actualResult = App.calculateSum(list1, list2, param1, param2);
+
+        assertEquals(expectedResult, actualResult);
+    }
 }
